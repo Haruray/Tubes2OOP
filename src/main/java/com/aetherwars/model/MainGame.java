@@ -96,7 +96,7 @@ public class MainGame {
         if (chosenCard.getManaRequired() <= currPlayer.getManaPoints()){
             System.out.print("Empty slots on board : ");
             for (int a : currBoard.getEmptySlotsIdx()){
-                System.out.print(a);
+                System.out.print(a+" | ");
             }
             System.out.print("\nSelect slot index to summon: ");
             int _slotinput = indexInput(currBoard.getEmptySlotsIdx(), false);
@@ -113,14 +113,14 @@ public class MainGame {
         if (chosenCard.getManaRequired() <= currPlayer.getManaPoints()){
             System.out.println("Your occupied slots on board: ");
             for (int a : currBoard.getOccupiedSlotsIdx()){
-                System.out.println(a + currBoard.getSlot(a).toString());
+                System.out.println(a +": "+ currBoard.getSlot(a).toString());
             }
             System.out.print("Select a card your on board to apply spell to (enter -1 to choose on enemies board instead): ");
             int _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), true);
             if (_slotinput==-1){
                 System.out.println("Enemies occupied slots on board: ");
                 for (int b : enemyBoard.getOccupiedSlotsIdx()){
-                    System.out.println((b+5) + currBoard.getSlot(b).toString());
+                    System.out.println(b +": " + currBoard.getSlot(b).toString());
                 }
                 System.out.print("Select a card on enemy board to apply spell to: ");
                 _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), false);
@@ -190,11 +190,34 @@ public class MainGame {
 
     public void attackPhase(){
         List<CharacterCard> _hasAttacked = new ArrayList<>();
+        this.phase = PlayPhase.END;
     }
-    private void endPhase() {
+    public void endPhase() {
+        this.currentTurn = this.currentTurn==1? 2 : 1;
+        this.phase = PlayPhase.DRAW;
+    }
+    public void printInformations(){
+        System.out.println("===Player 1 Information===");
+        System.out.println(this.board1);
+        System.out.println("Health : "+ this.firstPlayer.getHealthPoints()+"/80");
+        System.out.println("Mana : "+this.firstPlayer.getManaPoints()+"/"+this.firstPlayer.getMaxMana());
+        System.out.println("Deck : "+this.firstPlayer.getPlayerDeck().getCards().size()+" cards left");
+        System.out.println("\n===Player 2 Information==");
+        System.out.println(this.board2);
+        System.out.println("Health : "+ this.secondPlayer.getHealthPoints()+"/80");
+        System.out.println("Mana : "+this.secondPlayer.getManaPoints()+"/"+this.secondPlayer.getMaxMana());
+        System.out.println("Deck : "+this.secondPlayer.getPlayerDeck().getCards().size()+" cards left\n");
     }
     public void runPhase() throws DeckSizeException {
+        Player currPlayer = this.currentTurn==1? this.firstPlayer : this.secondPlayer;
+        Board currBoard = this.currentTurn==1? this.board1 : this.board2;
+        Board enemyBoard = this.currentTurn==1? this.board2:this.board1;
         while (!gameEnd){
+            currPlayer = this.currentTurn==1? this.firstPlayer : this.secondPlayer;
+            currBoard = this.currentTurn==1? this.board1 : this.board2;
+            enemyBoard = this.currentTurn==1? this.board2:this.board1;
+
+
             if (this.phase == PlayPhase.START) {
                 startPhase();
             }
@@ -202,9 +225,14 @@ public class MainGame {
                 drawPhase();
             }
             else if (this.phase == PlayPhase.PLANNING){
+                printInformations();
+                if (this.currentTurn==1){System.out.println("Player 1 Turn!!");}
+                else{System.out.println("Player 2 Turn!!");}
+                currPlayer.printPlayerHandCards();
                 planningPhase();
             }
             else if (this.phase == PlayPhase.ATTACK){
+                printInformations();
                 attackPhase();
             }
             else if (this.phase == PlayPhase.END){

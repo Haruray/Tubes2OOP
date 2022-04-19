@@ -44,4 +44,18 @@ public class Board {
         }
         return _notempties;
     }
+
+    @Override
+    public String toString() {
+        String _tostring="";
+        for(Card c : this.slot){
+            if (c.equals(new Card())){
+                System.out.print("|   |");
+            }
+            else{
+                System.out.print("| "+c.getCardName()+" |");
+            }
+        }
+        return _tostring;
+    }
 }
