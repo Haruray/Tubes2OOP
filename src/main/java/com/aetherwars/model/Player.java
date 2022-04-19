@@ -68,11 +68,14 @@ public class Player {
     public void printPlayerHandCards(){
         System.out.println("Your hand cards : ");
         for (int i = 0 ; i < this.getPlayerHand().size();i++){
-            System.out.println((i+1)+this.getPlayerHand().get(i).toString());
+            System.out.println((i+1)+". "+this.getPlayerHand().get(i).toString());
         }
     }
     public void discardCard(int idx){
         this.playerHand.remove(idx);
+    }
+    public void discardCard(Card c){
+        this.playerHand.remove(c);
     }
     public void drawCard() throws DeckSizeException {
         this.playerHand.add(this.playerDeck.popDeck());

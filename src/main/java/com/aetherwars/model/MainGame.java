@@ -11,10 +11,11 @@ public class MainGame {
     private Player firstPlayer;
     private Player secondPlayer;
     private int currentTurn = 1;
-    private PlayPhase phase = PlayPhase.DRAW;
+    private PlayPhase phase = PlayPhase.START;
     private Board board1;
     private Board board2;
     private Scanner scanner;
+    private boolean gameEnd = false;
 
     public MainGame(Player p1, Player p2){
         this.firstPlayer = p1;
@@ -101,6 +102,7 @@ public class MainGame {
             int _slotinput = indexInput(currBoard.getEmptySlotsIdx(), false);
             currBoard.setSlot(_slotinput,chosenCard);
             currPlayer.setManaPoints(currPlayer.getManaPoints()-chosenCard.getManaRequired());
+            currPlayer.discardCard(chosenCard);
         }
         else{
             System.out.println("Mana not enough.");
@@ -129,6 +131,8 @@ public class MainGame {
                 SpellCard chosenSpellCard = (SpellCard) chosenCard;
                 chosenSpellCard.apply((CharacterCard) enemyBoard.getSlot(_slotinput));
             }
+            currPlayer.setManaPoints(currPlayer.getManaPoints()-chosenCard.getManaRequired());
+            currPlayer.discardCard(chosenCard);
         }
         else{
             System.out.println("Mana not enough.");
@@ -143,7 +147,8 @@ public class MainGame {
                 "1. Use card\n" +
                 "2. Discard card\n" +
                 "3. Throw card from board\n" +
-                "4. End turn");
+                "4. End planning phase");
+        System.out.print("Select action to do (input the number): ");
         int _input = indexInput(new ArrayList<>(Arrays.asList(1,2,3,4)), false);
         while (_input!=4){
             if (_input == 1){
@@ -172,10 +177,59 @@ public class MainGame {
             else if (_input==3){
                 //throw card from board
             }
+            System.out.println("Available actions:\n" +
+                    "1. Use card\n" +
+                    "2. Discard card\n" +
+                    "3. Throw card from board\n" +
+                    "4. End planning phase");
+            System.out.print("Select action to do (input the number): ");
+            _input = indexInput(new ArrayList<>(Arrays.asList(1,2,3,4)), false);
         }
-
+        this.phase = PlayPhase.ATTACK;
     }
 
-    public void endGameScreen(){}
+    public void attackPhase(){
+        List<CharacterCard> _hasAttacked = new ArrayList<>();
+    }
+    private void endPhase() {
+    }
+    public void runPhase() throws DeckSizeException {
+        while (!gameEnd){
+            if (this.phase == PlayPhase.START) {
+                startPhase();
+            }
+            else if (this.phase == PlayPhase.DRAW){
+                drawPhase();
+            }
+            else if (this.phase == PlayPhase.PLANNING){
+                planningPhase();
+            }
+            else if (this.phase == PlayPhase.ATTACK){
+                attackPhase();
+            }
+            else if (this.phase == PlayPhase.END){
+                endPhase();
+            }
+        }
+    }
 
+
+
+    public void endGameScreen(){
+        //check kondisi menang/kalah
+        this.gameEnd = true;
+    }
+
+    public static void main(String[] args) throws DeckSizeException {
+        CharacterCard chc1 = new CharacterCard(1,"bruh","jancok",1,CharacterType.NETHER,10,10);
+        List<Card> chc = new ArrayList<>(Arrays.asList(chc1));
+        for (int i = 0 ; i < 40 ; i++){
+            chc.add(new CharacterCard(2,"bruh2","jancok2",1,CharacterType.NETHER,10,10));
+        }
+        Deck dick = new Deck(chc);
+        Player p1 = new Player("cok1",dick);
+        Player p2 = new Player("cok2",dick);
+        MainGame ng = new MainGame(p1,p2);
+        ng.runPhase();
+    }
 }

@@ -28,7 +28,7 @@ public class PotionSpell extends SpellCard implements Useable{
 
     @Override
     public String toString() {
-        String _fromsuper = super.toString().substring(0,super.toString().length()-2)+", ";
+        String _fromsuper = super.toString().substring(1,super.toString().length()-2)+", ";
         return "{" + _fromsuper+
                 "attackPointsMod=" + attackPointsMod +
                 ", healthPointsMod=" + healthPointsMod +
