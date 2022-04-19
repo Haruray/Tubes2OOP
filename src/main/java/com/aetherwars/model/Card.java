@@ -63,4 +63,14 @@ public class Card{
     public int hashCode() {
         return Objects.hash(getID());
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "ID=" + ID +
+                ", cardName='" + cardName + '\'' +
+                ", cardDescription='" + cardDescription + '\'' +
+                ", manaRequired=" + manaRequired +
+                '}';
+    }
 }

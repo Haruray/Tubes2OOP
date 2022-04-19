@@ -11,4 +11,12 @@ public class SpellCard extends Card{
     public SpellType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        String _fromsuper = super.toString().substring(0,super.toString().length()-2)+", ";
+        return "{" +_fromsuper+
+                "type=" + type +
+                '}';
+    }
 }

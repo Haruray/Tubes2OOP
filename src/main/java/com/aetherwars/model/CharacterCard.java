@@ -31,4 +31,14 @@ public class CharacterCard extends Card{
     public void setAttackPoints(int attackPoints) {
         this.attackPoints = attackPoints;
     }
+
+    @Override
+    public String toString() {
+        String _fromsuper = super.toString().substring(0,super.toString().length()-2)+", ";
+        return "{" + _fromsuper+
+                "type=" + type +
+                ", attackPoints=" + attackPoints +
+                ", healthPoints=" + healthPoints +
+                '}';
+    }
 }

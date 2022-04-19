@@ -23,4 +23,13 @@ public class PotionSpell extends SpellCard implements Useable{
         chCard.setAttackPoints(chCard.getAttackPoints()-this.attackPointsMod);
         chCard.setHealthPoints(chCard.getHealthPoints()-this.healthPointsMod);
     }
+
+    @Override
+    public String toString() {
+        String _fromsuper = super.toString().substring(0,super.toString().length()-2)+", ";
+        return "{" + _fromsuper+
+                "attackPointsMod=" + attackPointsMod +
+                ", healthPointsMod=" + healthPointsMod +
+                '}';
+    }
 }

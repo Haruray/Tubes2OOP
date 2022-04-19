@@ -11,4 +11,9 @@ public class SwapSpell extends SpellCard implements Useable{
         chCard.setHealthPoints(chCard.getAttackPoints());
         chCard.setAttackPoints(initialHealth);
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
