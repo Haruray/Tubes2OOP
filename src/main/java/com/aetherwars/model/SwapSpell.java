@@ -10,6 +10,8 @@ public class SwapSpell extends SpellCard implements Useable{
         int initialHealth = chCard.getHealthPoints();
         chCard.setHealthPoints(chCard.getAttackPoints());
         chCard.setAttackPoints(initialHealth);
+        System.out.println("You've applied the swap spell to "+chCard.getCardName()+"!");
+        System.out.println("Applied card information : "+chCard);
     }
 
     @Override

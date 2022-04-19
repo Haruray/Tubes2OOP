@@ -65,7 +65,12 @@ public class Player {
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
     }
-
+    public void printPlayerHandCards(){
+        System.out.println("Your hand cards : ");
+        for (int i = 0 ; i < this.getPlayerHand().size();i++){
+            System.out.println((i+1)+this.getPlayerHand().get(i).toString());
+        }
+    }
     public void discardCard(int idx){
         this.playerHand.remove(idx);
     }
