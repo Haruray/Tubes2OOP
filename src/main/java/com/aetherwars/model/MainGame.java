@@ -68,8 +68,7 @@ public class MainGame {
         }
         this.phase = PlayPhase.DRAW;
     }
-    public void drawPhase() throws DeckSizeException {
-        Player currPlayer = this.currentTurn==1? this.firstPlayer : this.secondPlayer;
+    public void drawPhase(Player currPlayer) throws DeckSizeException {
         try{
             currPlayer.drawCard();
             if (currPlayer.getPlayerHand().size() > currPlayer.getMaxHand()){
@@ -78,13 +77,13 @@ public class MainGame {
                 System.out.print("Select a card to discard (by number): ");
                 int idx = indexInput(IntStream.rangeClosed(1, currPlayer.getPlayerHand().size()).boxed().collect(Collectors.toList()), false);
                 //terus discard
-                System.out.println(currPlayer.getPlayerHand().get(idx).getCardName()+" is discarded.");
+                System.out.println(currPlayer.getPlayerHand().get(idx-1).getCardName()+" is discarded.");
                 currPlayer.discardCard(idx-1);
             }
         }
         catch (Exception e){
             //kartu sudah habis
-            //System.out.println(e);
+            System.out.println(e);
             endGameScreen();
         }
         currPlayer.resetMana();
@@ -139,10 +138,7 @@ public class MainGame {
         }
     }
 
-    public void planningPhase(){
-        Player currPlayer = this.currentTurn==1? this.firstPlayer : this.secondPlayer;
-        Board currBoard = this.currentTurn==1? this.board1 : this.board2;
-        Board enemyBoard = this.currentTurn==1? this.board2:this.board1;
+    public void planningPhase(Player currPlayer, Board currBoard, Board enemyBoard){
         System.out.println("Available actions:\n" +
                 "1. Use card\n" +
                 "2. Discard card\n" +
@@ -188,16 +184,21 @@ public class MainGame {
         this.phase = PlayPhase.ATTACK;
     }
 
-    public void attackPhase(){
+    public void attackPhase(Player currPlayer, Board enemyBoard){
+        //TODO
+        //the whole thing
         List<CharacterCard> _hasAttacked = new ArrayList<>();
         this.phase = PlayPhase.END;
     }
-    public void endPhase() {
+    public void endPhase(Player currPlayer) {
+        // TODO
+        // Konfigurasi mana
         this.currentTurn = this.currentTurn==1? 2 : 1;
         this.phase = PlayPhase.DRAW;
+        currPlayer.resetMana();
     }
     public void printInformations(){
-        System.out.println("===Player 1 Information===");
+        System.out.println("\n===Player 1 Information===");
         System.out.println(this.board1);
         System.out.println("Health : "+ this.firstPlayer.getHealthPoints()+"/80");
         System.out.println("Mana : "+this.firstPlayer.getManaPoints()+"/"+this.firstPlayer.getMaxMana());
@@ -222,21 +223,21 @@ public class MainGame {
                 startPhase();
             }
             else if (this.phase == PlayPhase.DRAW){
-                drawPhase();
+                drawPhase(currPlayer);
             }
             else if (this.phase == PlayPhase.PLANNING){
                 printInformations();
                 if (this.currentTurn==1){System.out.println("Player 1 Turn!!");}
                 else{System.out.println("Player 2 Turn!!");}
                 currPlayer.printPlayerHandCards();
-                planningPhase();
+                planningPhase(currPlayer,currBoard,enemyBoard);
             }
             else if (this.phase == PlayPhase.ATTACK){
                 printInformations();
-                attackPhase();
+                attackPhase(currPlayer, enemyBoard);
             }
             else if (this.phase == PlayPhase.END){
-                endPhase();
+                endPhase(currPlayer);
             }
         }
     }
