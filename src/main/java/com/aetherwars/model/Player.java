@@ -6,7 +6,8 @@ import java.util.List;
 public class Player {
     private String playerName;
     private int healthPoints = 80;
-    private int manaPoints = 0;
+    private int maxMana = 1;
+    private int manaPoints = maxMana;
     private Deck playerDeck;
     private List<Card> playerHand;
     private final int maxHand = 5;
@@ -33,6 +34,14 @@ public class Player {
         return playerDeck;
     }
 
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public int getMaxHand() {
+        return maxHand;
+    }
+
     public List<Card> getPlayerHand() {
         return playerHand;
     }
@@ -52,6 +61,11 @@ public class Player {
     public void setPlayerHand(List<Card> playerHand) {
         this.playerHand = playerHand;
     }
+
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+    }
+
     public void discardCard(int idx){
         this.playerHand.remove(idx);
     }
@@ -59,6 +73,6 @@ public class Player {
         this.playerHand.add(this.playerDeck.popDeck());
     }
     public void resetMana(){
-        this.manaPoints = 0;
+        this.manaPoints = this.maxMana;
     }
 }
