@@ -41,7 +41,6 @@ public class MainGame {
             //kartu sudah habis
             System.out.println(e);
         }
-
         currPlayer.resetMana();
     }
 }

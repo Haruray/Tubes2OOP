@@ -1,5 +1,5 @@
 package com.aetherwars.model;
 
 enum PlayPhase{
-    DRAW, PLANNING, ATTACK, END;
+    START, DRAW, PLANNING, ATTACK, END;
 }
