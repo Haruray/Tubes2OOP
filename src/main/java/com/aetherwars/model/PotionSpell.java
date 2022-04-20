@@ -1,6 +1,6 @@
 package com.aetherwars.model;
 
-public class PotionSpell extends SpellCard implements Useable{
+public class PotionSpell extends SpellCard implements TargetUse {
     private int attackPointsMod;
     private int healthPointsMod;
 
@@ -19,7 +19,7 @@ public class PotionSpell extends SpellCard implements Useable{
     }
 
     @Override
-    public void apply(CharacterCard chCard) {
+    public void applyTarget(CharacterCard chCard) {
         chCard.setAttackPoints(chCard.getAttackPoints()-this.attackPointsMod);
         chCard.setHealthPoints(chCard.getHealthPoints()-this.healthPointsMod);
         System.out.println("You've applied the potion spell to "+chCard.getCardName()+"!");

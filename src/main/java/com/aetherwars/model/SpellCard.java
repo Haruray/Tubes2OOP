@@ -1,6 +1,6 @@
 package com.aetherwars.model;
 
-public class SpellCard extends Card implements Useable{
+public class SpellCard extends Card implements TargetUse {
     private SpellType type;
 
     public SpellCard(int Id,String name, String desc, int mana, SpellType type){
@@ -21,7 +21,7 @@ public class SpellCard extends Card implements Useable{
     }
 
     @Override
-    public void apply(CharacterCard chCard) {
+    public void applyTarget(CharacterCard chCard) {
         //
     }
 }

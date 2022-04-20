@@ -1,5 +1,7 @@
 package com.aetherwars.model;
 
+import com.aetherwars.AsciiArtGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +70,11 @@ public class Player {
     public void printPlayerHandCards(){
         System.out.println("Your hand cards : ");
         for (int i = 0 ; i < this.getPlayerHand().size();i++){
-            System.out.println((i+1)+". "+this.getPlayerHand().get(i).toString());
+            if (this.getPlayerHand().get(i) instanceof CharacterCard)
+                System.out.println(AsciiArtGenerator.ANSI_PURPLE+(i+1)+". "+this.getPlayerHand().get(i).toString()+AsciiArtGenerator.ANSI_RESET);
+            else
+                System.out.println(AsciiArtGenerator.ANSI_CYAN+(i+1)+". "+this.getPlayerHand().get(i).toString()+AsciiArtGenerator.ANSI_RESET);
+
         }
     }
     public void discardCard(int idx){

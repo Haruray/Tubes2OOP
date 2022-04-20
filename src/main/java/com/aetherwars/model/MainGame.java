@@ -1,5 +1,9 @@
 package com.aetherwars.model;
 
+import com.aetherwars.AsciiArtGenerator;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -124,11 +128,11 @@ public class MainGame {
                 System.out.print("Select a card on enemy board to apply spell to: ");
                 _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), false);
                 SpellCard chosenSpellCard = (SpellCard) chosenCard;
-                chosenSpellCard.apply((CharacterCard) enemyBoard.getSlot(_slotinput));
+                chosenSpellCard.applyTarget((CharacterCard) enemyBoard.getSlot(_slotinput));
             }
             else{
                 SpellCard chosenSpellCard = (SpellCard) chosenCard;
-                chosenSpellCard.apply((CharacterCard) enemyBoard.getSlot(_slotinput));
+                chosenSpellCard.applyTarget((CharacterCard) enemyBoard.getSlot(_slotinput));
             }
             currPlayer.setManaPoints(currPlayer.getManaPoints()-chosenCard.getManaRequired());
             currPlayer.discardCard(chosenCard);
@@ -198,26 +202,25 @@ public class MainGame {
         currPlayer.resetMana();
     }
     public void printInformations(){
-        System.out.println("\n===Player 1 Information===");
+        System.out.println("\n==="+firstPlayer.getPlayerName()+"'s Information===");
         System.out.println(this.board1);
-        System.out.println("Health : "+ this.firstPlayer.getHealthPoints()+"/80");
-        System.out.println("Mana : "+this.firstPlayer.getManaPoints()+"/"+this.firstPlayer.getMaxMana());
+        System.out.println(AsciiArtGenerator.ANSI_RED+"Health : "+AsciiArtGenerator.ANSI_RESET+ this.firstPlayer.getHealthPoints()+"/80");
+        System.out.println(AsciiArtGenerator.ANSI_CYAN+"Mana : "+AsciiArtGenerator.ANSI_RESET+this.firstPlayer.getManaPoints()+"/"+this.firstPlayer.getMaxMana());
         System.out.println("Deck : "+this.firstPlayer.getPlayerDeck().getCards().size()+" cards left");
-        System.out.println("\n===Player 2 Information==");
+        System.out.println("\n==="+secondPlayer.getPlayerName()+"'s Information==");
         System.out.println(this.board2);
-        System.out.println("Health : "+ this.secondPlayer.getHealthPoints()+"/80");
-        System.out.println("Mana : "+this.secondPlayer.getManaPoints()+"/"+this.secondPlayer.getMaxMana());
+        System.out.println(AsciiArtGenerator.ANSI_RED+"Health : "+AsciiArtGenerator.ANSI_RESET+ this.secondPlayer.getHealthPoints()+"/80");
+        System.out.println(AsciiArtGenerator.ANSI_CYAN+"Mana : "+AsciiArtGenerator.ANSI_RESET+this.secondPlayer.getManaPoints()+"/"+this.secondPlayer.getMaxMana());
         System.out.println("Deck : "+this.secondPlayer.getPlayerDeck().getCards().size()+" cards left\n");
     }
-    public void runPhase() throws DeckSizeException {
-        Player currPlayer = this.currentTurn==1? this.firstPlayer : this.secondPlayer;
-        Board currBoard = this.currentTurn==1? this.board1 : this.board2;
-        Board enemyBoard = this.currentTurn==1? this.board2:this.board1;
+    public void runPhase() throws DeckSizeException, URISyntaxException, IOException {
+        Player currPlayer;
+        Board currBoard;
+        Board enemyBoard;
         while (!gameEnd){
             currPlayer = this.currentTurn==1? this.firstPlayer : this.secondPlayer;
             currBoard = this.currentTurn==1? this.board1 : this.board2;
             enemyBoard = this.currentTurn==1? this.board2:this.board1;
-
 
             if (this.phase == PlayPhase.START) {
                 startPhase();
@@ -226,17 +229,20 @@ public class MainGame {
                 drawPhase(currPlayer);
             }
             else if (this.phase == PlayPhase.PLANNING){
+                if (this.currentTurn==1){System.out.println(AsciiArtGenerator.ANSI_BLUE+AsciiArtGenerator.getAsciiArt("steve")+AsciiArtGenerator.ANSI_RESET);}
+                else{System.out.println(AsciiArtGenerator.ANSI_YELLOW+AsciiArtGenerator.getAsciiArt("alex")+AsciiArtGenerator.ANSI_RESET);}
                 printInformations();
-                if (this.currentTurn==1){System.out.println("Player 1 Turn!!");}
-                else{System.out.println("Player 2 Turn!!");}
+                System.out.println(AsciiArtGenerator.ANSI_GREEN+"=PLANNING PHASE="+AsciiArtGenerator.ANSI_RESET);
                 currPlayer.printPlayerHandCards();
                 planningPhase(currPlayer,currBoard,enemyBoard);
             }
             else if (this.phase == PlayPhase.ATTACK){
                 printInformations();
+                System.out.println(AsciiArtGenerator.ANSI_RED+"=ATTACK PHASE="+AsciiArtGenerator.ANSI_RESET);
                 attackPhase(currPlayer, enemyBoard);
             }
             else if (this.phase == PlayPhase.END){
+                System.out.println(AsciiArtGenerator.ANSI_WHITE+"=ENDPHASE="+AsciiArtGenerator.ANSI_RESET);
                 endPhase(currPlayer);
             }
         }
@@ -249,15 +255,15 @@ public class MainGame {
         this.gameEnd = true;
     }
 
-    public static void main(String[] args) throws DeckSizeException {
+    public static void main(String[] args) throws DeckSizeException, URISyntaxException, IOException {
         CharacterCard chc1 = new CharacterCard(1,"bruh","jancok",1,CharacterType.NETHER,10,10);
         List<Card> chc = new ArrayList<>(Arrays.asList(chc1));
         for (int i = 0 ; i < 40 ; i++){
             chc.add(new CharacterCard(2,"bruh2","jancok2",1,CharacterType.NETHER,10,10));
         }
         Deck dick = new Deck(chc);
-        Player p1 = new Player("cok1",dick);
-        Player p2 = new Player("cok2",dick);
+        Player p1 = new Player("steve",dick);
+        Player p2 = new Player("alex",dick);
         MainGame ng = new MainGame(p1,p2);
         ng.runPhase();
     }
