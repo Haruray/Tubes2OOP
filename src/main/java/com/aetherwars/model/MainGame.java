@@ -199,6 +199,10 @@ public class MainGame {
         // Konfigurasi mana
         this.currentTurn = this.currentTurn==1? 2 : 1;
         this.phase = PlayPhase.DRAW;
+        if (this.firstPlayer.getMaxMana()<10)
+            this.firstPlayer.setMaxMana(this.firstPlayer.getMaxMana()+1);
+        if (this.secondPlayer.getMaxMana()<10)
+            this.secondPlayer.setMaxMana(this.secondPlayer.getMaxMana()+1);
         currPlayer.resetMana();
     }
     public void printInformations(){
