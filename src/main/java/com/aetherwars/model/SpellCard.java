@@ -14,7 +14,7 @@ public class SpellCard extends Card implements TargetUse {
 
     @Override
     public String toString() {
-        String _fromsuper = super.toString().substring(1,super.toString().length()-2)+", ";
+        String _fromsuper = super.toString().substring(1,super.toString().length()-1)+", ";
         return "{" +_fromsuper+
                 "type=" + type +
                 '}';

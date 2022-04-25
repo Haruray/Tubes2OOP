@@ -9,6 +9,11 @@ public class PotionSpell extends SpellCard implements TargetUse {
         this.attackPointsMod = atkMod;
         this.healthPointsMod = hpMod;
     }
+    public PotionSpell(PotionSpell ps){
+        super(ps.getID(), ps.getCardName(), ps.getCardDescription(), ps.getManaRequired(), SpellType.PTN);
+        this.attackPointsMod = ps.getAttackPointsMod();
+        this.healthPointsMod = ps.getHealthPointsMod();
+    }
 
     public int getAttackPointsMod() {
         return attackPointsMod;
@@ -28,7 +33,7 @@ public class PotionSpell extends SpellCard implements TargetUse {
 
     @Override
     public String toString() {
-        String _fromsuper = super.toString().substring(1,super.toString().length()-2)+", ";
+        String _fromsuper = super.toString().substring(1,super.toString().length()-1)+", ";
         return "{" + _fromsuper+
                 "attackPointsMod=" + attackPointsMod +
                 ", healthPointsMod=" + healthPointsMod +

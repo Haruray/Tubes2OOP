@@ -12,6 +12,13 @@ public class CharacterCard extends Card{
         this.healthPoints = hp;
     }
 
+    public CharacterCard(CharacterCard ch){
+        super(ch.getID(), ch.getCardName(), ch.getCardDescription(), ch.getManaRequired());
+        this.type = ch.getType();
+        this.attackPoints = ch.getAttackPoints();
+        this.healthPoints = ch.getHealthPoints();
+    }
+
     public int getAttackPoints() {
         return attackPoints;
     }
@@ -58,7 +65,7 @@ public class CharacterCard extends Card{
     }
     @Override
     public String toString() {
-        String _fromsuper = super.toString().substring(1,super.toString().length()-2)+", ";
+        String _fromsuper = super.toString().substring(1,super.toString().length()-1)+", ";
         return "{" + _fromsuper+
                 "type=" + type +
                 ", attackPoints=" + attackPoints +

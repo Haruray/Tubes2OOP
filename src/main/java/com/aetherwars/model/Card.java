@@ -26,6 +26,14 @@ public class Card{
         cardsInitialized++;
         this.IDInitialized = cardsInitialized;
     }
+    public Card(Card c){
+        this.ID = c.getID();
+        this.cardName = c.getCardName();
+        this.cardDescription = c.getCardDescription();
+        this.manaRequired = c.getManaRequired();
+        cardsInitialized++;
+        this.IDInitialized = cardsInitialized;
+    }
     public int getID(){
         return this.ID;
     }

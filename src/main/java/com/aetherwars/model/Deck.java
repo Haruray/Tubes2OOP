@@ -1,6 +1,7 @@
 package com.aetherwars.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Deck {
@@ -52,5 +53,9 @@ public class Deck {
 
     public void removeCard(Card card){
         this.cards.remove(card);
+    }
+
+    public void shuffle(){
+        Collections.shuffle(this.cards);
     }
 }

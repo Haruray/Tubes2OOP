@@ -47,7 +47,7 @@ public class Board {
     public List<Integer> getOccupiedSlotsIdx(){
         List<Integer> _notempties= new ArrayList<>();
         for (int i = 0 ; i < this.slot.size() ; i++){
-            if (!this.slot.get(i).equals(new Card())){
+            if (this.slot.get(i).getID()!=-1){
                 _notempties.add(i);
             }
         }

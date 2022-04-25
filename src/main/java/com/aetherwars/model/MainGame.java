@@ -48,6 +48,7 @@ public class MainGame {
         return phase;
     }
     public int indexInput(List<Integer> choices, boolean canCancel){
+        if (canCancel){choices.add(-1);}
         int _input = scanner.nextInt();
         while (!choices.contains(_input)){
             System.out.print("Wrong input. Try again : ");
@@ -113,6 +114,7 @@ public class MainGame {
     }
 
     public void useSpell(Player currPlayer, Board currBoard, Board enemyBoard,Card chosenCard){
+        boolean usedSpell=false;
         if (chosenCard.getManaRequired() <= currPlayer.getManaPoints()){
             System.out.println("Your occupied slots on board: ");
             for (int a : currBoard.getOccupiedSlotsIdx()){
@@ -121,21 +123,31 @@ public class MainGame {
             System.out.print("Select a card your on board to apply spell to (enter -1 to choose on enemies board instead): ");
             int _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), true);
             if (_slotinput==-1){
-                System.out.println("Enemies occupied slots on board: ");
-                for (int b : enemyBoard.getOccupiedSlotsIdx()){
-                    System.out.println(b +": " + currBoard.getSlot(b).toString());
+                if (enemyBoard.getOccupiedSlotsIdx().size()>0){
+                    System.out.println("Enemies occupied slots on board: ");
+                    for (int b : enemyBoard.getOccupiedSlotsIdx()){
+                        System.out.println(b +": " + currBoard.getSlot(b).toString());
+                    }
+                    System.out.print("Select a card on enemy board to apply spell to: ");
+                    _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), false);
+                    SpellCard chosenSpellCard = (SpellCard) chosenCard;
+                    chosenSpellCard.applyTarget((CharacterCard) enemyBoard.getSlot(_slotinput));
+                    usedSpell = true;
                 }
-                System.out.print("Select a card on enemy board to apply spell to: ");
-                _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), false);
-                SpellCard chosenSpellCard = (SpellCard) chosenCard;
-                chosenSpellCard.applyTarget((CharacterCard) enemyBoard.getSlot(_slotinput));
+                else{
+                    System.out.println("No cards to apply the effect of the spell.");
+                }
+
             }
             else{
                 SpellCard chosenSpellCard = (SpellCard) chosenCard;
                 chosenSpellCard.applyTarget((CharacterCard) enemyBoard.getSlot(_slotinput));
+                usedSpell = true;
             }
-            currPlayer.setManaPoints(currPlayer.getManaPoints()-chosenCard.getManaRequired());
-            currPlayer.discardCard(chosenCard);
+            if (usedSpell){
+                currPlayer.setManaPoints(currPlayer.getManaPoints()-chosenCard.getManaRequired());
+                currPlayer.discardCard(chosenCard);
+            }
         }
         else{
             System.out.println("Mana not enough.");
@@ -323,16 +335,4 @@ public class MainGame {
         this.gameEnd = true;
     }
 
-    public static void main(String[] args) throws DeckSizeException, URISyntaxException, IOException {
-        CharacterCard chc1 = new CharacterCard(1,"bruh","jancok",1,CharacterType.NETHER,10,10);
-        List<Card> chc = new ArrayList<>(Arrays.asList(chc1));
-        for (int i = 0 ; i < 40 ; i++){
-            chc.add(new CharacterCard(2,"bruh2","jancok2",1,CharacterType.NETHER,10,10));
-        }
-        Deck dick = new Deck(chc);
-        Player p1 = new Player("steve",dick);
-        Player p2 = new Player("alex",dick);
-        MainGame ng = new MainGame(p1,p2);
-        ng.runPhase();
-    }
 }
