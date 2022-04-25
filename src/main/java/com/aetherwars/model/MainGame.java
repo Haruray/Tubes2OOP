@@ -126,10 +126,10 @@ public class MainGame {
                 if (enemyBoard.getOccupiedSlotsIdx().size()>0){
                     System.out.println("Enemies occupied slots on board: ");
                     for (int b : enemyBoard.getOccupiedSlotsIdx()){
-                        System.out.println(b +": " + currBoard.getSlot(b).toString());
+                        System.out.println(b +": " + enemyBoard.getSlot(b).toString());
                     }
                     System.out.print("Select a card on enemy board to apply spell to: ");
-                    _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), false);
+                    _slotinput = indexInput(enemyBoard.getOccupiedSlotsIdx(), false);
                     SpellCard chosenSpellCard = (SpellCard) chosenCard;
                     chosenSpellCard.applyTarget((CharacterCard) enemyBoard.getSlot(_slotinput));
                     usedSpell = true;
@@ -223,7 +223,7 @@ public class MainGame {
                     i++;
                 }
             }
-            System.out.print("Select character card (input the number): ");
+            System.out.print("Select character card (input the number. Enter -1 to skip): ");
             currCardIdxChoice = indexInput(IntStream.rangeClosed(1, i).boxed().collect(Collectors.toList()), true);
             if (currCardIdxChoice == -1){
                 break;

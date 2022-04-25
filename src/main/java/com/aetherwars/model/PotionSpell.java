@@ -25,8 +25,8 @@ public class PotionSpell extends SpellCard implements TargetUse {
 
     @Override
     public void applyTarget(CharacterCard chCard) {
-        chCard.setAttackPoints(chCard.getAttackPoints()-this.attackPointsMod);
-        chCard.setHealthPoints(chCard.getHealthPoints()-this.healthPointsMod);
+        chCard.setAttackPoints(chCard.getAttackPoints()+this.attackPointsMod);
+        chCard.setHealthPoints(chCard.getHealthPoints()+this.healthPointsMod);
         System.out.println("You've applied the potion spell to "+chCard.getCardName()+"!");
         System.out.println("Applied card information : "+chCard);
     }
