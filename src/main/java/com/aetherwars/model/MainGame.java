@@ -188,6 +188,13 @@ public class MainGame {
             }
             else if (_input==3){
                 //throw card from board
+                System.out.println("Your occupied slots on board: ");
+                for (int a : currBoard.getOccupiedSlotsIdx()){
+                    System.out.println(a +": "+ currBoard.getSlot(a).toString());
+                }
+                System.out.print("Select a card your on board to apply spell to (enter -1 to choose on enemies board instead): ");
+                int _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), true);
+                currBoard.removeSlot(_slotinput);
             }
             System.out.println("Available actions:\n" +
                     "1. Use card\n" +
@@ -326,7 +333,7 @@ public class MainGame {
     public void endGameScreen(){
         //check kondisi menang/kalah
         System.out.println("GAME OVER!");
-        if (this.firstPlayer.getHealthPoints()<=0){
+        if (this.firstPlayer.getHealthPoints()<=0 || this.firstPlayer.getPlayerDeck().getCards().size()==0){
             System.out.println(this.secondPlayer.getPlayerName()+" WINS!!");
         }
         else{
