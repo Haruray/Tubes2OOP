@@ -25,6 +25,15 @@ public class Board {
     public void removeSlot(int idx){
         this.slot.set(idx, new Card());
     }
+    public void removeSlot(Card card){
+        int idx=0;
+        for (Card c : this.slot){
+            if (c.getIDInitialized() == card.getIDInitialized()){
+                this.removeSlot(idx);
+            }
+            idx++;
+        }
+    }
     public List<Integer> getEmptySlotsIdx(){
         List<Integer> _empties= new ArrayList<>();
         for (int i = 0 ; i < this.slot.size() ; i++){
@@ -40,6 +49,16 @@ public class Board {
         for (int i = 0 ; i < this.slot.size() ; i++){
             if (!this.slot.get(i).equals(new Card())){
                 _notempties.add(i);
+            }
+        }
+        return _notempties;
+    }
+
+    public List<Card> getExistingCards(){
+        List<Card> _notempties= new ArrayList<>();
+        for (int i = 0 ; i < this.slot.size() ; i++){
+            if (!this.slot.get(i).equals(new Card())){
+                _notempties.add(this.slot.get(i));
             }
         }
         return _notempties;

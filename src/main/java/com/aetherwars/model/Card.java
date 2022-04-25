@@ -51,6 +51,10 @@ public class Card{
         this.manaRequired = mana;
     }
 
+    public boolean checkIdInitialized(Card c){
+        return c.getIDInitialized() == this.getIDInitialized();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

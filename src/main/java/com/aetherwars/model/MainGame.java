@@ -171,8 +171,8 @@ public class MainGame {
                 System.out.print("Select a card to discard (by number): ");
                 int idx = indexInput(IntStream.rangeClosed(1, currPlayer.getPlayerHand().size()).boxed().collect(Collectors.toList()), false);
                 //terus discard
-                System.out.println(currPlayer.getPlayerHand().get(idx).getCardName()+" is discarded.");
-                currPlayer.discardCard(idx);
+                System.out.println(currPlayer.getPlayerHand().get(idx-1).getCardName()+" is discarded.");
+                currPlayer.discardCard(idx-1);
             }
             else if (_input==3){
                 //throw card from board
@@ -188,10 +188,67 @@ public class MainGame {
         this.phase = PlayPhase.ATTACK;
     }
 
-    public void attackPhase(Player currPlayer, Board enemyBoard){
+    public void attackPhase(Player currPlayer, Board currBoard, Player enemyPlayer,Board enemyBoard){
         //TODO
         //the whole thing
-        List<CharacterCard> _hasAttacked = new ArrayList<>();
+        int _input = 0;
+        List<Card> _hasAttacked = new ArrayList<>();
+        List<CharacterCard> cardChoices = new ArrayList<>();
+        CharacterCard target;
+        CharacterCard selected;
+        int i = 1;
+        int j = 1;
+        int currCardIdxChoice;
+        int enemyCardIdxChoice;
+        while (!_hasAttacked.containsAll(currBoard.getExistingCards()) && _input!=-1){
+            //milih kartu untuk attack
+            System.out.println("Your summoned characters :");
+            for(Card c : currBoard.getExistingCards()){
+                if (!_hasAttacked.contains(c)){
+                    CharacterCard chc = (CharacterCard) c;
+                    cardChoices.add(chc);
+                    System.out.println(i+". " +chc);
+                    i++;
+                }
+            }
+            System.out.print("Select character card (input the number): ");
+            currCardIdxChoice = indexInput(IntStream.rangeClosed(1, i).boxed().collect(Collectors.toList()), true);
+            if (currCardIdxChoice == -1){
+                break;
+            }
+            selected = cardChoices.get(currCardIdxChoice-1);
+            //memilih musuh yang diserang
+            if (enemyBoard.getOccupiedSlotsIdx().size()!=0){
+                System.out.println("Enemies cards to attack : ");
+                for (Card c : enemyBoard.getExistingCards()){
+                    CharacterCard ech = (CharacterCard) c;
+                    System.out.println(j+". "+ech);
+                    j++;
+                }
+                System.out.print("Select character card (input the number): ");
+                enemyCardIdxChoice = indexInput(IntStream.rangeClosed(1, j).boxed().collect(Collectors.toList()), false);
+                target = (CharacterCard) enemyBoard.getExistingCards().get(enemyCardIdxChoice-1);
+                //damage calculation
+                System.out.println(selected.getCardName()+" is attacking "+target.getCardName()+" !!");
+                selected.getDamage(target.getAttackPoints(), target.getType());
+                target.getDamage(selected.getAttackPoints(),selected.getType());
+                //check if dies
+                if (selected.getHealthPoints() <= 0)
+                    currBoard.removeSlot(selected);
+                if (target.getHealthPoints() <= 0)
+                    enemyBoard.removeSlot(target);
+            }
+            else{
+                //damage calculation
+                enemyPlayer.setHealthPoints(enemyPlayer.getHealthPoints()- selected.getAttackPoints());
+                System.out.println(selected.getCardName()+" is attacking enemy player!! Enemy remaining health : "+enemyPlayer.getHealthPoints());
+                if (enemyPlayer.getHealthPoints() <= 0){
+                    endGameScreen();
+                }
+            }
+            //repeat
+            _hasAttacked.add((Card) selected);
+        }
         this.phase = PlayPhase.END;
     }
     public void endPhase(Player currPlayer) {
@@ -219,10 +276,12 @@ public class MainGame {
     }
     public void runPhase() throws DeckSizeException, URISyntaxException, IOException {
         Player currPlayer;
+        Player enemyPlayer;
         Board currBoard;
         Board enemyBoard;
         while (!gameEnd){
             currPlayer = this.currentTurn==1? this.firstPlayer : this.secondPlayer;
+            enemyPlayer = this.currentTurn==1? this.secondPlayer : this.firstPlayer;
             currBoard = this.currentTurn==1? this.board1 : this.board2;
             enemyBoard = this.currentTurn==1? this.board2:this.board1;
 
@@ -243,7 +302,7 @@ public class MainGame {
             else if (this.phase == PlayPhase.ATTACK){
                 printInformations();
                 System.out.println(AsciiArtGenerator.ANSI_RED+"=ATTACK PHASE="+AsciiArtGenerator.ANSI_RESET);
-                attackPhase(currPlayer, enemyBoard);
+                attackPhase(currPlayer, currBoard, enemyPlayer,enemyBoard);
             }
             else if (this.phase == PlayPhase.END){
                 System.out.println(AsciiArtGenerator.ANSI_WHITE+"=ENDPHASE="+AsciiArtGenerator.ANSI_RESET);
@@ -252,10 +311,15 @@ public class MainGame {
         }
     }
 
-
-
     public void endGameScreen(){
         //check kondisi menang/kalah
+        System.out.println("GAME OVER!");
+        if (this.firstPlayer.getHealthPoints()<=0){
+            System.out.println(this.secondPlayer.getPlayerName()+" WINS!!");
+        }
+        else{
+            System.out.println(this.firstPlayer.getPlayerName()+" WINS!!");
+        }
         this.gameEnd = true;
     }
 
