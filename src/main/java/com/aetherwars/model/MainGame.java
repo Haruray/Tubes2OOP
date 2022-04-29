@@ -192,7 +192,7 @@ public class MainGame {
                 for (int a : currBoard.getOccupiedSlotsIdx()){
                     System.out.println(a +": "+ currBoard.getSlot(a).toString());
                 }
-                System.out.print("Select a card your on board to apply spell to (enter -1 to choose on enemies board instead): ");
+                System.out.print("Select a card your on board to throw away: ");
                 int _slotinput = indexInput(currBoard.getOccupiedSlotsIdx(), true);
                 currBoard.removeSlot(_slotinput);
             }

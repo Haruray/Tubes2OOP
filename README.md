@@ -1,21 +1,49 @@
-# IF2210 Project Template
+# IF2210 Tugas Besar 2
+Dibuat oleh Safiq Faray (13519145)
 
-Here is an example of project using gradle as the build tools.
-Try running these commands:
+## Deskripsi Program
+Game kartu turn based untuk 2 pemain. Pemain bermain secara bergantian pada 1 layar yang sama. 
+Tujuan dari game ini adalah menghabiskan health points (HP) musuh. 
+HP dapat berkurang apabila terkena serangan dari kartu karakter yang diletakkan di board. Dibuat dengan Java
 
-`./gradlew run`
+## Struktur Kode
+### Class Diagram
+![class diagram](https://media.discordapp.net/attachments/943436922615889920/969404444171206696/diagram_oop25.png?width=1134&height=670)
+### Struktur files
+```sh
+├───gradle
+│   └───wrapper
+└───src # main code here
+    └───main
+        ├───java
+        │   └───com
+        │       └───aetherwars # terdapat file AetherWars.java yang berfungsi sebagai program utama (mengandung method static main)
+        │           ├───model # tempat dikumpulkannya class-class yang bekerja sebagai objek nantinya
+        │           └───util # terdapat CSVReader, untuk membaca file csv
+        └───resources # assets
+            └───com
+                └───aetherwars
+                    └───card
+                        ├───asciiart # berisi files asciiart yang digunakan dalam program utama
+                        ├───data # berisi file csv charactercard, spells, dan deck
+                        └───image # tidak digunakan
+                            ├───character
+                            └───spell
+                                ├───morph
+                                ├───potion
+                                └───swap
+```
+## Requirements
+- Java 8
+- Intellij IDEA
 
-You will notice that it will open a window that display 'Minecraft: Aether Wars'.
-In the command line you can see the data that is being read by `CSVReader.java`
+## How To Run
+Masukkan command `./gradlew run` pada folder ini.
 
-What happen is when you use `./gradlew run`, it will start the main function in your app.
-For this app, the main function lives in `AetherWars.java`.
+## Screenshots
+![screenshot1](https://media.discordapp.net/attachments/943436922615889920/969413845850411018/unknown.png?width=1235&height=670)
+![screenshot2](https://media.discordapp.net/attachments/943436922615889920/969413987966013511/unknown.png?width=1440&height=385)
+![screenshot3](https://media.discordapp.net/attachments/943436922615889920/969414160028950579/unknown.png?width=1440&height=250)
+![screenshot4](https://media.discordapp.net/attachments/943436922615889920/969414263833784440/unknown.png?width=1440&height=593)
 
-You can explore more about gradle [here](https://guides.gradle.org/creating-new-gradle-builds/)
 
-## JDK
-
-As of the creation of this template, the assistant team used and tested the JDK 8 installation from OpenJDK and Amazon Corretto (since JavaFX is readily available on those installations). You can easily pick and install your desired JDK version and variant by doing it via an IDE like [IntelliJ IDEA](https://www.jetbrains.com/idea/)
-
-## Class Diagram
-![class diagram](https://media.discordapp.net/attachments/943436922615889920/965828641542012938/diagram_oop23.png?width=1381&height=670)
